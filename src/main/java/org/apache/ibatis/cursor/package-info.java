@@ -15,5 +15,6 @@
  */
 /**
  * Base package for cursor feature
+ * 结果集cursor的接口代码
  */
 package org.apache.ibatis.cursor;

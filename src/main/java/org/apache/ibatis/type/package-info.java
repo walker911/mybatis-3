@@ -15,5 +15,6 @@
  */
 /**
  * Type handlers.
+ * 类型处理器代码
  */
 package org.apache.ibatis.type;

@@ -15,5 +15,6 @@
  */
 /**
  * Base package for caching stuff
+ * Mybatis缓存实现代码
  */
 package org.apache.ibatis.cache;

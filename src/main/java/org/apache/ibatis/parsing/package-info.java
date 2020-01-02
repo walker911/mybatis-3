@@ -15,5 +15,6 @@
  */
 /**
  * Parsing utils
+ * XML解析工具
  */
 package org.apache.ibatis.parsing;

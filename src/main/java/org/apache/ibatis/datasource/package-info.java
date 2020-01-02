@@ -15,5 +15,6 @@
  */
 /**
  * Base package for Datasources
+ * 数据源和数据工厂的代码
  */
 package org.apache.ibatis.datasource;

@@ -15,5 +15,6 @@
  */
 /**
  * Base package for mapping.
+ * SQL mapping 代码
  */
 package org.apache.ibatis.mapping;
