@@ -84,6 +84,7 @@ public class XMLConfigBuilder extends BaseBuilder {
   private XMLConfigBuilder(XPathParser parser, String environment, Properties props) {
     super(new Configuration());
     ErrorContext.instance().resource("SQL Mapper Configuration");
+    // 处理属性变量
     this.configuration.setVariables(props);
     this.parsed = false;
     this.environment = environment;
@@ -91,10 +92,12 @@ public class XMLConfigBuilder extends BaseBuilder {
   }
 
   public Configuration parse() {
+    // 不重复解析
     if (parsed) {
       throw new BuilderException("Each XMLConfigBuilder can only be used once.");
     }
     parsed = true;
+    // 从配置文件的Configuration处开始解析配置
     parseConfiguration(parser.evalNode("/configuration"));
     return configuration;
   }
