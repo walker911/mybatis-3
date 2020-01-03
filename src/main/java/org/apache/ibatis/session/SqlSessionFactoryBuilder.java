@@ -27,6 +27,7 @@ import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 
 /**
  * Builds {@link SqlSession} instances.
+ * SqlSessionFactory构造器，可以自己解析配置，也可以传入提前构建好的配置对象{@link Configuration}
  *
  * @author Clinton Begin
  */

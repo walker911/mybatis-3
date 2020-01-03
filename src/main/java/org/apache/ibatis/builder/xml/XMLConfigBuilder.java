@@ -47,6 +47,8 @@ import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.JdbcType;
 
 /**
+ * 解析XML定义的 configuration 对象
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */

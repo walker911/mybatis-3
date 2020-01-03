@@ -96,6 +96,8 @@ import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 
 /**
+ * Configuration: 存储所有 MyBatis 运行时的配置
+ *
  * @author Clinton Begin
  */
 public class Configuration {
