@@ -22,6 +22,13 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * 插件机制
+ * 1. 植入插件
+ *    实现 Interceptor，调用 plugin()，生成代理类
+ * 2. 执行插件
+ *    调用Plugin.invoke()，执行插件
+ */
 class PluginTest {
 
   @Test

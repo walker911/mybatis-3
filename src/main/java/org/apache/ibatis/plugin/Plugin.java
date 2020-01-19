@@ -41,6 +41,7 @@ public class Plugin implements InvocationHandler {
   }
 
   public static Object wrap(Object target, Interceptor interceptor) {
+    // 根据插件类 @Signature 注解内容，生成相应的结构，参考 PluginTest
     Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
     Class<?> type = target.getClass();
     // 获取目标类实现的接口
