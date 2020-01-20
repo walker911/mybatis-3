@@ -289,6 +289,7 @@ public class XNode {
 
   public List<XNode> getChildren() {
     List<XNode> children = new ArrayList<>();
+    // 获取子节点列表
     NodeList nodeList = node.getChildNodes();
     if (nodeList != null) {
       for (int i = 0, n = nodeList.getLength(); i < n; i++) {
@@ -303,10 +304,13 @@ public class XNode {
 
   public Properties getChildrenAsProperties() {
     Properties properties = new Properties();
+    // 获取并遍历子节点
     for (XNode child : getChildren()) {
+      // 获取 property 节点的 name 和 value 节点
       String name = child.getStringAttribute("name");
       String value = child.getStringAttribute("value");
       if (name != null && value != null) {
+        // 设置属性到属性对象中
         properties.setProperty(name, value);
       }
     }
