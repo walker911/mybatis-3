@@ -295,6 +295,7 @@ public class XNode {
       for (int i = 0, n = nodeList.getLength(); i < n; i++) {
         Node node = nodeList.item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
+          // 将节点对象封装到 XNode 中，并将 XNode 对象放入 children 列表中
           children.add(new XNode(xpathParser, node, variables));
         }
       }

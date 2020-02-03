@@ -29,6 +29,7 @@ public final class PropertyNamer {
   }
 
   public static String methodToProperty(String name) {
+    // 将 getXXX 或 isXXX 或 setXXX 转换成相应的属性，比如 getName -> name
     if (name.startsWith("is")) {
       name = name.substring(2);
     } else if (name.startsWith("get") || name.startsWith("set")) {
@@ -49,6 +50,7 @@ public final class PropertyNamer {
   }
 
   public static boolean isGetter(String name) {
+    // 过滤出以 get 或 is 开头的方法
     return (name.startsWith("get") && name.length() > 3) || (name.startsWith("is") && name.length() > 2);
   }
 

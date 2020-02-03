@@ -150,10 +150,13 @@ public class XMLConfigBuilder extends BaseBuilder {
     if (context == null) {
       return new Properties();
     }
+    // 获取 settings 子节点中的内容
     Properties props = context.getChildrenAsProperties();
     // Check that all settings are known to the configuration class
+    // 创建 Configuration 类的 元信息 对象
     MetaClass metaConfig = MetaClass.forClass(Configuration.class, localReflectorFactory);
     for (Object key : props.keySet()) {
+      // 检查 Configuration 中是否存在相关属性，不存在则抛出异常
       if (!metaConfig.hasSetter(String.valueOf(key))) {
         throw new BuilderException("The setting " + key + " is not known.  Make sure you spelled it correctly (case sensitive).");
       }

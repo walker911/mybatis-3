@@ -62,12 +62,19 @@ public class Reflector {
 
   public Reflector(Class<?> clazz) {
     type = clazz;
+    // 解析目标类的默认构造方法，并赋值给 defaultConstructor 变量
     addDefaultConstructor(clazz);
+    // 解析 getter 方法，并将解析结果放入 getMethods 中
     addGetMethods(clazz);
+    // 解析 setter 方法，并将解析结果放入 setMethods 中
     addSetMethods(clazz);
+    // 解析属性字段，并将解析结果添加到 setMethods 或 getMethods 中
     addFields(clazz);
+    // 从 getMethods 映射中获取可读属性名数组
     readablePropertyNames = getMethods.keySet().toArray(new String[0]);
+    // 从 setMethods 映射中获取可写属性名数组
     writablePropertyNames = setMethods.keySet().toArray(new String[0]);
+    // 将所有属性名的大写形式作为键，属性名作为值
     for (String propName : readablePropertyNames) {
       caseInsensitivePropertyMap.put(propName.toUpperCase(Locale.ENGLISH), propName);
     }
@@ -84,9 +91,12 @@ public class Reflector {
 
   private void addGetMethods(Class<?> clazz) {
     Map<String, List<Method>> conflictingGetters = new HashMap<>();
+    // 获取当前类，接口，以及父类中的方法
     Method[] methods = getClassMethods(clazz);
+    // 过滤无参数 get 或 is method；方法名转换为属性；
     Arrays.stream(methods).filter(m -> m.getParameterTypes().length == 0 && PropertyNamer.isGetter(m.getName()))
       .forEach(m -> addMethodConflict(conflictingGetters, PropertyNamer.methodToProperty(m.getName()), m));
+    // 解决 getter 冲突
     resolveGetterConflicts(conflictingGetters);
   }
 
@@ -100,8 +110,10 @@ public class Reflector {
           winner = candidate;
           continue;
         }
+        // 获取返回值类型
         Class<?> winnerType = winner.getReturnType();
         Class<?> candidateType = candidate.getReturnType();
+        // 两个方法的返回值类型一致，若都为 boolean, 则选取 isXXX 方法
         if (candidateType.equals(winnerType)) {
           if (!boolean.class.equals(candidateType)) {
             isAmbiguous = true;
@@ -109,8 +121,10 @@ public class Reflector {
           } else if (candidate.getName().startsWith("is")) {
             winner = candidate;
           }
+          // winnerType 是 candidateType 的子类，类型上更具体，选取 winnerType
         } else if (candidateType.isAssignableFrom(winnerType)) {
           // OK getter type is descendant
+          // candidateType 是 winnerType 的子类，candidate更合适，更新 winner
         } else if (winnerType.isAssignableFrom(candidateType)) {
           winner = candidate;
         } else {
@@ -118,6 +132,7 @@ public class Reflector {
           break;
         }
       }
+      // 将筛选出来的方法，放入 getMethods 中，并将方法的返回值添加到 getTypes 中
       addGetMethod(propName, winner, isAmbiguous);
     }
   }
@@ -129,15 +144,20 @@ public class Reflector {
             name, method.getDeclaringClass().getName()))
         : new MethodInvoker(method);
     getMethods.put(name, invoker);
+    // 解析返回值类型
     Type returnType = TypeParameterResolver.resolveReturnType(method, type);
+    // 将返回值类型由 Type 转为 Class, 并将转换后的结果缓存到 getTypes 中
     getTypes.put(name, typeToClass(returnType));
   }
 
   private void addSetMethods(Class<?> clazz) {
     Map<String, List<Method>> conflictingSetters = new HashMap<>();
     Method[] methods = getClassMethods(clazz);
+    // 过滤出 setter 方法，且方法仅有一个参数
     Arrays.stream(methods).filter(m -> m.getParameterTypes().length == 1 && PropertyNamer.isSetter(m.getName()))
+      // setter 方法发生冲突的原因：可能存在重载的情况
       .forEach(m -> addMethodConflict(conflictingSetters, PropertyNamer.methodToProperty(m.getName()), m));
+    // 解决 setter 冲突
     resolveSetterConflicts(conflictingSetters);
   }
 
@@ -151,6 +171,7 @@ public class Reflector {
   private void resolveSetterConflicts(Map<String, List<Method>> conflictingSetters) {
     for (String propName : conflictingSetters.keySet()) {
       List<Method> setters = conflictingSetters.get(propName);
+      // 获取 getter 方法的返回值类型，由于 getter 方法不存在重载情况，所以根据它的返回值类型推断合适的 setter
       Class<?> getterType = getTypes.get(propName);
       boolean isGetterAmbiguous = getMethods.get(propName) instanceof AmbiguousMethodInvoker;
       boolean isSetterAmbiguous = false;
@@ -162,11 +183,13 @@ public class Reflector {
           break;
         }
         if (!isSetterAmbiguous) {
+          // 选择一个合适的 setter 方法
           match = pickBetterSetter(match, setter, propName);
           isSetterAmbiguous = match == null;
         }
       }
       if (match != null) {
+        // 将筛选出的方法放入 setMethods 中，并将方法参数值添加到 setTypes 中
         addSetMethod(propName, match);
       }
     }
