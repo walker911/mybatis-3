@@ -27,8 +27,10 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
   private final String children;
 
   public PropertyTokenizer(String fullname) {
+    // 检查传入的参数中是否包含字符 '.'
     int delim = fullname.indexOf('.');
     if (delim > -1) {
+      // 以点为边界进行分割
       name = fullname.substring(0, delim);
       children = fullname.substring(delim + 1);
     } else {
@@ -36,6 +38,7 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
       children = null;
     }
     indexedName = name;
+    // 检查传入的参数中是否包含字符 '['
     delim = name.indexOf('[');
     if (delim > -1) {
       index = name.substring(delim + 1, name.length() - 1);
@@ -66,11 +69,12 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
 
   @Override
   public PropertyTokenizer next() {
+    // 对 children 进行再次分割，用于解析多重复合属性
     return new PropertyTokenizer(children);
   }
 
   @Override
-  public void remove() {
+  public void remove() { 
     throw new UnsupportedOperationException("Remove is not supported, as it has no meaning in the context of properties.");
   }
 }
