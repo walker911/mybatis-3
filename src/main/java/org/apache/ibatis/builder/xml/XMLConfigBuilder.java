@@ -106,6 +106,7 @@ public class XMLConfigBuilder extends BaseBuilder {
 
   /**
    * 根据节点名进行解析
+   * 解析配置文件以及映射文件，解析结果放入 Configuration 对象中
    *
    * @param root 根节点
    */
