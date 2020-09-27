@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.walker.ibatis.mapper.ArticleMapper">
+
+  <sql id="table">
+     ${author}
+  </sql>
+
+  <select id="findByAuthorAndCreateTime" resultType="com.walker.ibatis.model.Article">
+    select
+    <include refid="table">
+      <property name="author" value="author"/>
+    </include>
+    from article
+    where author = #{author} and create_time > #{createTime}
+  </select>
+
+  <!-- 查询 -->
+  <select id="findByAuthor" resultType="com.walker.ibatis.model.Article">
+    select * from article where author = #{author}
+  </select>
+
+</mapper>
