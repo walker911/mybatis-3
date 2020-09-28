@@ -2,6 +2,7 @@ package com.walker.ibatis.reflection;
 
 import com.walker.ibatis.model.User;
 import org.apache.ibatis.reflection.property.PropertyCopier;
+import org.apache.ibatis.reflection.property.PropertyTokenizer;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -20,5 +21,14 @@ public class PropertiesTest {
     User user2 = new User();
     PropertyCopier.copyBeanProperties(user1.getClass(), user1, user2);
     System.out.println(user2.getRemark());
+  }
+
+  @Test
+  public void propertyTokenizer() {
+    PropertyTokenizer tokenizer = new PropertyTokenizer("student[sid].name");
+    System.out.println(tokenizer.getName());
+    System.out.println(tokenizer.getIndexedName());
+    System.out.println(tokenizer.getIndex());
+    System.out.println(tokenizer.getChildren());
   }
 }

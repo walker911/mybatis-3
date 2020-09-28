@@ -18,7 +18,7 @@ package org.apache.ibatis.reflection.property;
 import java.util.Iterator;
 
 /**
- * 属性标记
+ * 属性分词
  * 拆分字符串，放入各个属性中
  *
  * @author Clinton Begin
