@@ -15,5 +15,7 @@
  */
 /**
  * Object factory.
+ * 对象工厂
+ * 基于反射生产出各种对象
  */
 package org.apache.ibatis.reflection.factory;
