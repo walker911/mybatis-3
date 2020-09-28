@@ -15,5 +15,6 @@
  */
 /**
  * Object wrappers.
+ * 对象包装器：使用装饰器模式对各种类型的对象进行进一步的封装，增加一些功能
  */
 package org.apache.ibatis.reflection.wrapper;
