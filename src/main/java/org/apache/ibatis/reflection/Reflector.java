@@ -49,18 +49,27 @@ import org.apache.ibatis.reflection.property.PropertyNamer;
  */
 public class Reflector {
 
+  // 被反射解析的类
   private final Class<?> type;
+  // 可读属性列表，即get方法的属性列表
   private final String[] readablePropertyNames;
+  // 可写属性列表，即set方法的属性列表
   private final String[] writablePropertyNames;
+  // set方法映射map, 键为属性名, 值为对应的方法
   private final Map<String, Invoker> setMethods = new HashMap<>();
+  // get方法映射map, 键为属性名, 值为对应的方法
   private final Map<String, Invoker> getMethods = new HashMap<>();
+  // set方法输入类型，键为属性名，值为对应该属性的set方法的类型(set方法的第一个参数的类型)
   private final Map<String, Class<?>> setTypes = new HashMap<>();
+  // get方法输出类型，键为属性名，值为对应该属性的get方法的类型(get方法的返回值类型)
   private final Map<String, Class<?>> getTypes = new HashMap<>();
+  // 默认构造方法
   private Constructor<?> defaultConstructor;
-
+  // 大小写无关的属性映射表，键为属性名全大写值，值为属性名
   private Map<String, String> caseInsensitivePropertyMap = new HashMap<>();
 
   public Reflector(Class<?> clazz) {
+    // 要被反射解析的类
     type = clazz;
     // 解析目标类的默认构造方法，并赋值给 defaultConstructor 变量
     addDefaultConstructor(clazz);
@@ -83,20 +92,31 @@ public class Reflector {
     }
   }
 
+  /**
+   * 设置默认构造器
+   *
+   * @param clazz 解析的类
+   */
   private void addDefaultConstructor(Class<?> clazz) {
     Constructor<?>[] constructors = clazz.getDeclaredConstructors();
     Arrays.stream(constructors).filter(constructor -> constructor.getParameterTypes().length == 0)
       .findAny().ifPresent(constructor -> this.defaultConstructor = constructor);
   }
 
+  /**
+   * 类的get方法
+   *
+   * @param clazz 被反射处理的目标类
+   */
   private void addGetMethods(Class<?> clazz) {
+    // 记录属性的get方法，键为属性名，值为get方法列表，列表记录get方法是由于前期某个属性可能找到多个get方法
     Map<String, List<Method>> conflictingGetters = new HashMap<>();
     // 获取当前类，接口，以及父类中的方法
     Method[] methods = getClassMethods(clazz);
     // 过滤无参数 get 或 is method；方法名转换为属性；
     Arrays.stream(methods).filter(m -> m.getParameterTypes().length == 0 && PropertyNamer.isGetter(m.getName()))
       .forEach(m -> addMethodConflict(conflictingGetters, PropertyNamer.methodToProperty(m.getName()), m));
-    // 解决 getter 冲突
+    // 若某个属性有多个get方法，解决 getter 冲突，找到合适的那个
     resolveGetterConflicts(conflictingGetters);
   }
 
