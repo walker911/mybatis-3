@@ -21,6 +21,8 @@ import java.lang.reflect.Method;
 import org.apache.ibatis.reflection.Reflector;
 
 /**
+ * 负责对象其他方法的操作
+ *
  * @author Clinton Begin
  */
 public class MethodInvoker implements Invoker {
@@ -32,8 +34,10 @@ public class MethodInvoker implements Invoker {
     this.method = method;
 
     if (method.getParameterTypes().length == 1) {
+      // 只有一个参数时，type为输入参数类型
       type = method.getParameterTypes()[0];
     } else {
+      // type为返回值类型
       type = method.getReturnType();
     }
   }
@@ -41,6 +45,7 @@ public class MethodInvoker implements Invoker {
   @Override
   public Object invoke(Object target, Object[] args) throws IllegalAccessException, InvocationTargetException {
     try {
+      // 方法触发
       return method.invoke(target, args);
     } catch (IllegalAccessException e) {
       if (Reflector.canControlMemberAccessible()) {

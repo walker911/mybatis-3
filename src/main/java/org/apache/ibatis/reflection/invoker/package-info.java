@@ -15,5 +15,6 @@
  */
 /**
  * Unused.
+ * 基于反射实现对象方法的调用和对象属性的读写
  */
 package org.apache.ibatis.reflection.invoker;
