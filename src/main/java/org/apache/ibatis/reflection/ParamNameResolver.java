@@ -28,6 +28,9 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 
+/**
+ * 参数名解析器
+ */
 public class ParamNameResolver {
 
   public static final String GENERIC_NAME_PREFIX = "param";
@@ -38,6 +41,7 @@ public class ParamNameResolver {
    * The name is obtained from {@link Param} if specified. When {@link Param} is not specified,
    * the parameter index is used. Note that this index could be different from the actual index
    * when the method has special parameters (i.e. {@link RowBounds} or {@link ResultHandler}).
+   * 方法输入参数次序表，键为参数次序，值为参数名称或@Param注解的值
    * </p>
    * <ul>
    * <li>aMethod(@Param("M") int a, @Param("N") int b) -&gt; {{0, "M"}, {1, "N"}}</li>
@@ -47,6 +51,7 @@ public class ParamNameResolver {
    */
   private final SortedMap<Integer, String> names;
 
+  // 是否含有@Param
   private boolean hasParamAnnotation;
 
   public ParamNameResolver(Configuration config, Method method) {

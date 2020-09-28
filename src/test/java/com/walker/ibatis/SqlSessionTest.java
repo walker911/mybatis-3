@@ -71,4 +71,22 @@ public class SqlSessionTest {
       }
     }
   }
+
+  @Test
+  public void paramNameResolver() throws IOException {
+    // 1. mybatis 初始化
+    String resource = "com/walker/ibatis/mybatis-config.xml";
+    // 配置文件输入流
+    InputStream inputStream = Resources.getResourceAsStream(resource);
+
+    // SqlSessionFactory
+    SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+    // 2. 数据读写
+    try (SqlSession session = sqlSessionFactory.openSession()) {
+      ArticleMapper articleMapper = session.getMapper(ArticleMapper.class);
+      Article article = articleMapper.findByIdAndAuthor(1, "123");
+      System.out.println(article);
+    }
+  }
 }

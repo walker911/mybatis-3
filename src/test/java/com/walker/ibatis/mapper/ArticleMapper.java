@@ -19,4 +19,7 @@ public interface ArticleMapper {
                                           @Param("createTime") String createTime);
 
   List<Article> findByAuthor(@Param("author") String author);
+
+  Article findByIdAndAuthor(Integer id, @Param("author") String author);
+
 }
