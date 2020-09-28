@@ -18,6 +18,9 @@ package org.apache.ibatis.reflection.property;
 import java.util.Iterator;
 
 /**
+ * 属性标记
+ * 拆分字符串，放入各个属性中
+ *
  * @author Clinton Begin
  */
 public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
@@ -74,7 +77,7 @@ public class PropertyTokenizer implements Iterator<PropertyTokenizer> {
   }
 
   @Override
-  public void remove() { 
+  public void remove() {
     throw new UnsupportedOperationException("Remove is not supported, as it has no meaning in the context of properties.");
   }
 }

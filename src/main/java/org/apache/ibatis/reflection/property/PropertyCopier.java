@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import org.apache.ibatis.reflection.Reflector;
 
 /**
+ * 属性复制
+ *
  * @author Clinton Begin
  */
 public final class PropertyCopier {
@@ -28,10 +30,19 @@ public final class PropertyCopier {
     // Prevent Instantiation of Static Class
   }
 
+  /**
+   * 对象属性复制
+   *
+   * @param type 对象的类型
+   * @param sourceBean 源对象
+   * @param destinationBean 目标对象
+   */
   public static void copyBeanProperties(Class<?> type, Object sourceBean, Object destinationBean) {
     Class<?> parent = type;
     while (parent != null) {
+      // 获取类的所有属性
       final Field[] fields = parent.getDeclaredFields();
+      // 遍历
       for (Field field : fields) {
         try {
           try {
@@ -48,6 +59,7 @@ public final class PropertyCopier {
           // Nothing useful to do, will only fail on final fields, which will be ignored.
         }
       }
+      // 父类
       parent = parent.getSuperclass();
     }
   }
